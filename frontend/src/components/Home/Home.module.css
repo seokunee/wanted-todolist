@@ -1,0 +1,17 @@
+.home {
+  padding-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.to_login {
+  margin-top: 3rem;
+  outline: none;
+  border: none;
+  font-size: 2rem;
+  border-radius: 1rem;
+  background-color: rgb(157, 157, 157);
+  cursor: pointer;
+}
