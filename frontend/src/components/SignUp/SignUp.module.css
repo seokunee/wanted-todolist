@@ -18,3 +18,14 @@
 .input {
   margin-bottom: 1rem;
 }
+
+.submit_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit {
+  margin: 0 1rem;
+}
