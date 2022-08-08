@@ -9,6 +9,7 @@ const SignUp = () => {
     checkPassword: "",
   });
 
+  const [token, setToken] = useState<string>("");
   const onChageInputs = (e: React.FormEvent<HTMLInputElement>) => {
     const { value, name } = e.currentTarget;
     setInputs({ ...inputs, [name]: value });
@@ -16,7 +17,7 @@ const SignUp = () => {
 
   const createUser = async () => {
     try {
-      const response = await fetch("http://localhost:8080/users/create", {
+      await fetch("http://localhost:8080/users/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,19 +26,33 @@ const SignUp = () => {
           email: inputs.email,
           password: inputs.password,
         }),
-      });
-      console.log("response = ", response);
+      })
+        .then((res) => res.json())
+        .then((data) => setToken(data));
     } catch {
       console.error("signup error!");
     }
   };
-  const submit = () => {};
+
+  const submit = () => {
+    const emailRegExp = /[0-9a-zA-Z._+-]+@[0-9a-zA-Z-]+\.[0-9a-zA-Z.]+/i;
+    const passwordRegExp = /^[A-Za-z0-9]{8,}$/;
+    if (
+      emailRegExp.test(inputs.email) === true &&
+      passwordRegExp.test(inputs.password) === true &&
+      inputs.checkPassword === inputs.password
+    ) {
+      createUser();
+    } else {
+      alert("올바른 아이디, 비밀번호가 아닙니다.");
+    }
+  };
 
   return (
     <div className={styles.signup_container}>
       <h1>회원가입</h1>
       <div className={styles.signup}>
-        <span className={styles.title}>이메일</span>
+        <span className={styles.title}>이메일(@,. 포함)</span>
         <input
           name="email"
           className={styles.input}
@@ -45,7 +60,7 @@ const SignUp = () => {
           value={inputs.email}
           type="text"
         />
-        <span className={styles.title}>비밀번호</span>
+        <span className={styles.title}>비밀번호 (8자리 이상)</span>
         <input
           name="password"
           className={styles.input}
@@ -66,7 +81,7 @@ const SignUp = () => {
         <Link to="/login">
           <button className={styles.submit}>이전</button>
         </Link>
-        <button onClick={createUser} className={styles.submit}>
+        <button onClick={submit} className={styles.submit}>
           완료
         </button>
       </div>
